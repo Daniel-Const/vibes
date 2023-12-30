@@ -2,8 +2,10 @@
 
 A terminal audio visualizer written in Rust
 
+<img width="400" src="./public/vibes-demo.png" />
+
 ## Description
 
-Uses your devices microphone to listen to music / sound in the environment.  
-Displays a wave animation in the terminal responding to the sound data.
+Uses your device microphone to listen to music or sound in the environment.  
+Displays a wave visualisation in the terminal responding to the sound data.
 
