@@ -1,11 +1,10 @@
 mod visualiser;
 
 use cpal::traits::StreamTrait;
-use std::{thread, time};
 
 fn main() {
     // TODO: get width / height from cli args 
-    let mut visualiser = visualiser::Visualiser::new(300, 200);
+    let mut visualiser = visualiser::Visualiser::new(420, 300, 200, 200);
 
     let host = cpal::default_host();
     let device = host.default_input_device().expect("no output device available");
@@ -24,7 +23,6 @@ fn main() {
             visualiser.draw(&data.to_vec());
             visualiser.draw_to_terminal();
             visualiser.clear();
-            thread::sleep(time::Duration::from_millis(80));
         },
         move |_err| {
             // errors
