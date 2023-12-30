@@ -4,8 +4,20 @@ A terminal audio visualizer written in Rust
 
 ![alt text](https://github.com/Daniel-Const/vibes/blob/main/public/vibes-demo.gif)
 
-## Description
+Sound data is retrieved from the device microphone. A wave visualisation is rendered in the terminal responding to the audio data.
+Playing music from the same device works too!
 
-Uses your device microphone to listen to music or sound in the environment.  
-Displays a wave visualisation in the terminal responding to the sound data.
+## Get started
+
+```bash
+# Clone git repo
+> git clone https://github.com/Daniel-Const/vibes.git
+
+# Build release version
+> cargo build --release
+> ./target/release/vibes
+
+# Run in dev mode
+cargo run
+```
 
