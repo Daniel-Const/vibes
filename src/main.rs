@@ -1,3 +1,4 @@
+mod term;
 mod visualiser;
 
 use clap::Parser;
@@ -5,20 +6,23 @@ use cpal::traits::StreamTrait;
 
 #[derive(Parser)]
 struct Args {
-    #[arg(long, default_value_t = 350)]
-    width: u32,
+    #[arg(long, default_value_t = '|')]
+    draw_char: char,
 
-    #[arg(long, default_value_t = 200)]
-    height: u32,
+    #[arg(long, default_value_t = String::from("green"))]
+    color: String,
 
-    #[arg(long, default_value_t = 150)]
-    wave_height: u32,
+    #[arg(long, default_value_t = false)]
+    fill: bool,
 }
 
 fn main() {
     let args = Args::parse();
+    let visualiser = visualiser::Visualiser::new(args.draw_char, args.fill);
+    let mut term = term::Terminal::new();
 
-    let mut visualiser = visualiser::Visualiser::new(args.width, args.height, args.wave_height);
+    let mut scale_factor: f32 = term.rows.into();
+    scale_factor = scale_factor.log10();
 
     let host = cpal::default_host();
     let device = host
@@ -39,18 +43,19 @@ fn main() {
         .build_input_stream(
             &config,
             move |data: &[f32], _: &cpal::InputCallbackInfo| {
-                visualiser.draw(&data.to_vec());
-                visualiser.draw_to_terminal();
-                visualiser.clear();
+                term.clear();
+                visualiser.simple(data, &mut term, scale_factor);
+                term.flush();
             },
             move |_err| {
                 // errors
             },
-            None, // None=blocking, Some(Duration)=timeout
+            None,
         )
         .unwrap();
 
     loop {
         let _ = stream.play();
+        std::thread::sleep(std::time::Duration::from_millis(20));
     }
 }
