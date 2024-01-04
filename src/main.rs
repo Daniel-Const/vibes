@@ -21,8 +21,8 @@ fn main() {
     let visualiser = visualiser::Visualiser::new(args.draw_char, args.fill);
     let mut term = term::Terminal::new();
 
-    let mut scale_factor: f32 = term.rows.into();
-    scale_factor = scale_factor.log10();
+    // TODO: Improve scaling based on terminal height
+    let scale_factor: f32 = 4.0; 
 
     let host = cpal::default_host();
     let device = host
@@ -54,8 +54,8 @@ fn main() {
         )
         .unwrap();
 
+    let _ = stream.play();
     loop {
-        let _ = stream.play();
         std::thread::sleep(std::time::Duration::from_millis(20));
     }
 }
